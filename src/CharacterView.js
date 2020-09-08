@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import endpoint from './endpoint';
 
-const CharacterView = ({ character = {} }) => {
-  console.log(character);
+const CharacterView = ({ match }) => {
+  const [character, setCharacter] = useState({});
+
+  useEffect(() => {
+    fetch(endpoint + '/characters/' + match.params.id)
+      .then((response) => response.json())
+      .then((response) => setCharacter(response.character))
+      .catch((error) => console.log(error));
+  }, [match.params.id]);
+
   return (
     <section className="CharacterView">
       <h2>{character.name}</h2>
@@ -19,7 +28,7 @@ const CharacterView = ({ character = {} }) => {
           <strong>Hair Color</strong>: {character.hairColor}
         </li>
         <li>
-          <strong>Heigh</strong>: {character.height}
+          <strong>Height</strong>: {character.height}
         </li>
         <li>
           <strong>Mass</strong>: {character.mass}
